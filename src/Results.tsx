@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useStore } from "./state";
 import { getApiKey, toDutchDate } from "./utils";
-import Icon from "./Icon";
+import Icon from "./components/Icon";
+import Alert from "./components/Alert";
 
 interface StudentInfo {
   achternaam: string;
@@ -31,7 +32,9 @@ const Results = () => {
     enabled: store.searchValue !== "" && store.selectedCertificate !== "",
     queryFn: () =>
       fetch(
-        `https://groenkeurapi.acceptatie.erkenningen.nl/api/students?search=${store.searchValue}&certificates=${store.selectedCertificate}`,
+        `${import.meta.env.VITE_API_URL}/students?search=${
+          store.searchValue
+        }&certificates=${store.selectedCertificate}`,
         {
           headers: {
             apikey: getApiKey(),
@@ -48,27 +51,39 @@ const Results = () => {
     return (
       <Icon
         imageName="spinner"
-        className="animate-spin fill-blue-800"
+        className="animate-spin fill-skin-fill"
         size={56}
       />
     );
 
-  if (error) return <div>"An error has occurred: " + error</div>;
+  if (error)
+    return (
+      <Alert type="error">
+        Er is een fout opgetreden. Probeer het later opnieuw.
+      </Alert>
+    );
 
   return (
     <div className="flex flex-col gap-3 mt-3">
       {data?.length === 0 ? (
-        <div>Er zijn geen resultaten beschikbaar.</div>
+        <Alert type="warning">
+          Er zijn geen resultaten beschikbaar. Pas de zoekcriteria aan.
+        </Alert>
       ) : (
         data?.map((s) => (
-          <div key={s.id}>
-            <div className="text-green-500 text-2xl">
+          <div key={s.id} className="border-t border-gray-500 pt-3">
+            <div className="text-skin-primary text-xl">
               {s.initialen} {s.voornaam} {s.achternaam}
             </div>
-            <div className="">
-              {s.certificaten[0].certCode} (Uitgegeven op{" "}
-              {toDutchDate(s.certificaten[0].beginDatum)} en geldig tot{" "}
-              {toDutchDate(s.certificaten[0].eindDatum)})
+            <div className="flex gap-2">
+              <Icon imageName="check-mark" className="mt-1 shrink-0"></Icon>
+              <div className="flex xs:gap-0 flex-col">
+                <span>{s.certificaten[0].certCode}</span>
+                <span className="tabular-nums">
+                  Uitgegeven op {toDutchDate(s.certificaten[0].beginDatum)} en
+                  geldig tot {toDutchDate(s.certificaten[0].eindDatum)}
+                </span>
+              </div>
             </div>
           </div>
         ))

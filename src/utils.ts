@@ -1,5 +1,5 @@
 export const toDutchDate = (date: string) => {
-  return new Date(date).toLocaleDateString("nl");
+  return new Date(date).toLocaleDateString("nl", { dateStyle: "short" });
 };
 
 export const getApiKey = () => {
