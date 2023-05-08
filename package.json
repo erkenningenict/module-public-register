@@ -15,9 +15,7 @@
     "react-dom": "^18.2.0",
     "react-inlinesvg": "^3.0.2",
     "react-to-webcomponent": "^1.7.6",
-    "valtio": "^1.10.4"
-  },
-  "devDependencies": {
+    "valtio": "^1.10.4",
     "@tailwindcss/forms": "^0.5.3",
     "@types/node": "^18.16.2",
     "@types/react": "^18.0.28",
