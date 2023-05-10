@@ -32,7 +32,7 @@ function App() {
         const link = document.createElement("link");
         link.type = "text/css";
         link.rel = "stylesheet";
-        link.href = `http://fonts.googleapis.com/css?family=${fontName}`;
+        link.href = `https://fonts.googleapis.com/css?family=${fontName}`;
 
         document.head.appendChild(link);
       };
